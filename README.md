@@ -1,2 +1,2 @@
-# Bonobringer
-Wikicommons webscraper and discord webhook that brings you bonobos 
+# Waifu-Webhook
+Discord webhook that gets anime pics on a regular basis 
