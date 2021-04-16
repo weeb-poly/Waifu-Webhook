@@ -1,0 +1,23 @@
+{
+    "waifu.pics": {
+	"SFW": {
+	    "url": "https://waifu.pics"
+	    "regex":
+	},
+	"NSFW": {
+	    "url":
+	    "regex":
+	}
+    },
+    "pixiv": {
+	"SFW": {
+	    "url": "https://waifu.pics"
+	    "regex":
+	},
+	"NSFW": {
+	    "url":
+	    "regex":
+	}
+	
+    }
+}
