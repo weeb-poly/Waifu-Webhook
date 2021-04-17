@@ -22,40 +22,53 @@ function download(url, dir, imagename){
 	});
 }
 
-async function start(schedule){
+async function start(server, number, tag, sfw){
 
-    let endpoint = "https://waifu.pics/api/" + schedule[key][sfw] + '/';
-  		await https.get(endpoint, (resp) => {
-  			let data = '';
-  			resp.on('data', (chunk) => {
-  			    data += chunk;
-  			});
+    let endpoint = "https://waifu.pics/api/" + sfw + '/' + tag;
 
-  			resp.on('end', () => {
-  			    let imgData = JSON.parse(data);
-  			    let url = imgData["url"];
-            // regex for getting the file type extension
-            let name = key + url.match(/\.[0-9a-z]+$/i);
-  			    download(url, "./" + key, name);
-  			});
-
-  			resp.on('error', (err) => {
-  			    console.log("Error: " + err.message);
-  			});
-
+  	await https.get(endpoint, (resp) => {
+  		let data = '';
+  		resp.on('data', (chunk) => {
+  		    data += chunk;
   		});
+
+			resp.on('end', () => {
+			    let imgData = JSON.parse(data);
+			    let url = imgData["url"];
+
+          // regex for getting the file type extension
+          let name = tag + "_" + number + url.match(/\.[0-9a-z]+$/i);
+			    download(url, "./" + server, name);
+			});
+
+			resp.on('error', (err) => {
+			    console.log("Error: " + err.message);
+			});
+
+		});
 
 };
 
 async function driver(schedule){
 
-  let tags = schedule[key][tags].match(/[^,]+/g); // array of tags
+  let serverChannels = Object.keys(schedule);
+  let images = {};
 
-  /*
-  for await(){
+  // gets all the images for each channel
+  serverChannels.forEach((key, i) => {
+    images[key] = [];
+    let tags = schedule[key]["tags"].match(/[^,]+/g); // gets the tags each channels wants and puts it in an array
+    for (let i = 0; i < schedule[key]["frequency"]; i++)
+      images[key].push(tags[Math.floor(Math.random() * tags.length)]);
+  });
 
+  for await (let server of serverChannels){
+    let number = 0;
+    for await(let tag of images[server]){
+      start(server, number++, tag, schedule[server]["type"]);
+    }
   }
-  */
+
 }
 
 // this is the main function
