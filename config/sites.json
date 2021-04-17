@@ -1,11 +1,23 @@
 {
-    "server": {
-	"channel1": {
-	    "channelHook:": "<INSERT WEBHOOK HERE>",
-	    "site": "<INSERT SITE HERE>",
-	    "frequency": "done on an hourly basis",
-	    "sfw": true
+    "waifu.pics": {
+	"SFW": {
+	    "url": "https://waifu.pics"
+	    "regex": /x/
 	},
-	
+	"NSFW": {
+	    "url": ""
+	    "regex": /x/
+	}
     },
+    "pixiv": {
+	"SFW": {
+	    "url": "https://waifu.pics"
+	    "regex":
+	},
+	"NSFW": {
+	    "url":
+	    "regex":
+	}
+	
+    }
 }

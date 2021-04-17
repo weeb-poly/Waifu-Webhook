@@ -1,0 +1,11 @@
+{
+    "server": {
+	"channel1": {
+	    "channelHook:": "<INSERT WEBHOOK HERE>",
+	    "site": "<INSERT SITE HERE>",
+	    "frequency": "done on an hourly basis",
+	    "sfw": true
+	},
+	
+    },
+}
