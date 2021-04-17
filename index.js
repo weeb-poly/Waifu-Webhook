@@ -1,7 +1,4 @@
 const webhook = require("webhook-discord");
-const puppeteer = require("puppeteer");
-const sources = require("sites.json");
-const dest = require("channels.json");
 const https = require('https');
 fs = require('fs');
 
@@ -24,29 +21,35 @@ function download(url, imagename){
 }
 
 async function start(schedule, downloads){
+	Object.keys(schedule).forEach((key) => {
+		await https.get("https://waifu.pics/api/", () => {
+			let data = '';
+			resp.on('data', (chunk) = > {
+				data += chunk;
+			});
 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+			resp.on('end', () => {
+				let imgData = JSON.parse(data);
+				let url = imgData["url"];
 
-    // loop here
-    schedule.forEach(async function (){
-	await page.goto();
-	// download all the images for the day
-	const data = await page.evaluate();
-	download(data);
-	downloads[""][""] = "";
-    });
+				download(url, name));
+			});
 
-    browser.close();
+			resp.on('error', (err) => {
+				console.log("Error: " + err.message);
+			});
+
+		});
+	});
+
 };
 
 // main function
 (() => {
     let schedule = {};
     // parse the sites and channels
-    
+
     // peform the function on loop on time
     let downloads = start(schedule);
-    
-})();
 
+})();

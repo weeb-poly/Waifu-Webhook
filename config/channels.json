@@ -1,11 +1,8 @@
 {
-    "server": {
-	"channel1": {
-	    "channelHook:": "<INSERT WEBHOOK HERE>",
-	    "site": "<INSERT SITE HERE>",
-	    "frequency": "done on an hourly basis",
-	    "sfw": true
+	"<Servername-chanelName>": {
+	    "frequency": "how many times per day",
+	    "sfw": true,
+      "tags": "waifu,neko,smug,blush"
 	},
-	
-    },
+
 }
