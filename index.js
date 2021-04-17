@@ -22,7 +22,7 @@ function download(url, dir, imagename){
 	});
 }
 
-async function start(server, number, tag, sfw){
+async function imgGet(server, number, tag, sfw){
 
     let endpoint = "https://waifu.pics/api/" + sfw + '/' + tag;
 
@@ -49,6 +49,12 @@ async function start(server, number, tag, sfw){
 
 };
 
+// utility to get rid of all files in a directory
+async function cleanup(dir){
+  if(!fs.existsSync(dir)) return;
+  fs.rmdir(dir, { recursive: true }).then(() => console.log(dir + ' removed'));
+}
+
 async function driver(schedule){
 
   let serverChannels = Object.keys(schedule);
@@ -62,12 +68,15 @@ async function driver(schedule){
       images[key].push(tags[Math.floor(Math.random() * tags.length)]);
   });
 
+  // downloads all images
   for await (let server of serverChannels){
     let number = 0;
     for await(let tag of images[server]){
-      start(server, number++, tag, schedule[server]["type"]);
+      imgGet(server, number++, tag, schedule[server]["type"]);
     }
   }
+
+  // webhook stuff
 
 }
 
@@ -75,16 +84,6 @@ async function driver(schedule){
 (() => {
   let rawData = fs.readFileSync("./config/channels.json");
   let schedule = JSON.parse(rawData);
+  let urlData = fs.readFileSync('.config/channels.json');
   driver(schedule);
 })();
-
-/* main function
-(() => {
-    let schedule = {};
-    // parse the sites and channels
-
-    // peform the function on loop on time
-    let downloads = start(schedule);
-
-})();
-*/
