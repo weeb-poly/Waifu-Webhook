@@ -1,8 +1,12 @@
 {
-	"<Servername-chanelName>": {
-	    "frequency": "how many times per day",
+	"Weeb-poly#image-spam": {
+	    "frequency": 1,
 	    "sfw": true,
-      "tags": "waifu,neko,smug,blush"
+	    "tags": "waifu,neko,smug,blush"
 	},
-
+	"Weeb-poly#nsfw-image-spam": {
+			"frequency": 3,
+			"sfw": true,
+			"tags": "waifu,neko,trap"
+	}
 }
