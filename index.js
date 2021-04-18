@@ -55,7 +55,7 @@ async function cleanup(dir){
   fs.rmdir(dir, { recursive: true }).then(() => console.log(dir + ' removed'));
 }
 
-async function driver(schedule){
+async function driver(schedule, endpoints){
 
   let serverChannels = Object.keys(schedule);
   let images = {};
@@ -78,6 +78,7 @@ async function driver(schedule){
 
   // webhook stuff
 
+
 }
 
 // this is the main function
@@ -85,5 +86,6 @@ async function driver(schedule){
   let rawData = fs.readFileSync("./config/channels.json");
   let schedule = JSON.parse(rawData);
   let urlData = fs.readFileSync('.config/channels.json');
-  driver(schedule);
+  let endpoints = fs.readFileSync('urlData');
+  driver(schedule, endpoints);
 })();

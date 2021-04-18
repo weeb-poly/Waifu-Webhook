@@ -1,0 +1,26 @@
+{
+  "name": "waifu-webhook",
+  "version": "1.0.0",
+  "description": "Discord webhook that gets images",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prasantacharya/Waifu-Webhook.git"
+  },
+  "keywords": [
+    "discord",
+    "webhook"
+  ],
+  "author": "Prasantacharya",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Prasantacharya/Waifu-Webhook/issues"
+  },
+  "homepage": "https://github.com/Prasantacharya/Waifu-Webhook#readme",
+  "dependencies": {
+    "webhook-discord": "^3.7.7"
+  }
+}
