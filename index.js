@@ -1,6 +1,8 @@
-// const webhook = require("webhook-discord");
+const webhook = require("webhook-discord");
 const https = require('https');
 fs = require('fs');
+var LocalStorage = require('node-localstorage').LocalStorage,
+let localStorage = new LocalStorage('./scratch');
 
 
 function download(url, dir, imagename){
@@ -55,16 +57,16 @@ async function cleanup(dir){
   fs.rmdir(dir, { recursive: true }).then(() => console.log(dir + ' removed'));
 }
 
-async function driver(schedule, endpoints){
+async function driver(channelConfig, endpoints){
 
-  let serverChannels = Object.keys(schedule);
+  let serverChannels = Object.keys(channelConfig);
   let images = {};
 
   // gets all the images for each channel
   serverChannels.forEach((key, i) => {
     images[key] = [];
-    let tags = schedule[key]["tags"].match(/[^,]+/g); // gets the tags each channels wants and puts it in an array
-    for (let i = 0; i < schedule[key]["frequency"]; i++)
+    let tags = channelConfig[key]["tags"].match(/[^,]+/g); // gets the tags each channels wants and puts it in an array
+    for (let i = 0; i < channelConfig[key]["frequency"]; i++)
       images[key].push(tags[Math.floor(Math.random() * tags.length)]);
   });
 
@@ -72,7 +74,7 @@ async function driver(schedule, endpoints){
   for await (let server of serverChannels){
     let number = 0;
     for await(let tag of images[server]){
-      imgGet(server, number++, tag, schedule[server]["type"]);
+      imgGet(server, number++, tag, channelConfig[server]["type"]);
     }
   }
 
@@ -83,9 +85,15 @@ async function driver(schedule, endpoints){
 
 // this is the main function
 (() => {
-  let rawData = fs.readFileSync("./config/channels.json");
-  let schedule = JSON.parse(rawData);
-  let urlData = fs.readFileSync('.config/channels.json');
-  let endpoints = fs.readFileSync('urlData');
-  driver(schedule, endpoints);
+  /* -- Parsing the json config files -- */
+  // channel config contains the prefrences for each channel
+  let channelConfig = JSON.parse(fs.readFileSync("./config/channel-config.json"));
+  // channel-tokens contains the actual urls, names, and images for each webhook
+  let tokens = JSON.parse(fs.readFileSync('.config/channel-tokens.json'));
+  // contains the last time images were gathered and the last time images were sent
+  let postTime = JSON.parse(fs.readFileSync("./config/schedule.json");
+  // contains quotes to display for each tag
+  let quotes = JSON.parse(fs.readFileSync("./config/quotes.json"));
+
+  /* --  -- */
 })();

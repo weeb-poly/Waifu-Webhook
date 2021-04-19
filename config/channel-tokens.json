@@ -1,0 +1,12 @@
+{
+    "#Weeb-poly#image-spam":{
+       endpoint:"<Insert url>",
+       name: "",
+       avatar: "",
+      }
+    "Weeb-poly#nsfw-image-spam": {
+      endpoint: "<Insert url>",
+      name: "",
+      avatar: ""
+    }
+}
