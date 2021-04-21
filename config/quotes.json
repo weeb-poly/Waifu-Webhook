@@ -1,20 +1,34 @@
 {
-  generic:{
-    sfw:["kawii <3",
+   "generic":{
+      "sfw":[
+         "kawii <3",
          "not my favorite",
          "I have the power of god and anime on my side",
-         "This right here is my favorite thing. Ever!"],
-    nsfw:["lewd",
-          "Atleast its not handholding",
-          "I dont know what this is ... but its kinda hot"]
-  },
-  "loli":{
-
-  },
-  "waifu":{
-
-  },
-  "smug":{
-    
-  }
+         "This right here is my favorite thing. Ever!"
+      ],
+      "nsfw":[
+         "lewd",
+         "Atleast its not handholding",
+         "I dont know what this is ... but its kinda hot",
+         "BONK!"
+      ]
+   },
+   "loli":{
+      "sfw":[
+         "So cute!",
+         "I heard you liked loli's",
+         "headpats only"
+      ],
+      "nsfw":[
+         "FBI OPEN UP"
+      ]
+   },
+   "waifu":{
+      "sfw":[
+         "Ara Ara"
+      ],
+      "nsfw":[
+         "Ara Ara"
+      ]
+   }
 }

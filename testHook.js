@@ -27,9 +27,9 @@ async function test(url){
     const msg = new webhook.MessageBuilder()
                   .setName(data["name"])
                   .setColor("#04ff00")
-                  .setTitle("I heard you like lolis")
+                  .setTitle("ara-ara")
                   .setAuthor("From Waifu.pics", "https://waifu.pics/favicon.png", "https://waifu.pics/")
-                  .setImage("https://i.waifu.pics/HHquLhX.png")
+                  .setImage("https://i.waifu.pics/ZV7J1WW.png")
                   .setFooter("star us on github:\nhttps://github.com/weeb-poly/Waifu-Webhook");
     Hook.send(msg);
   });
