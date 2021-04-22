@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Prasantacharya/Waifu-Webhook#readme",
   "dependencies": {
+    "node-cron": "^3.0.0",
     "webhook-discord": "^3.7.7"
   }
 }

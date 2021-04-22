@@ -37,10 +37,25 @@ async function test(url){
   console.log(testData);
 }
 
-test("https://discord.com/api/webhooks/833124330618486824/lp6sA3nBlatOkf7tl-cqNPD1kgi9De4S1A-mxBBv3vy57IpWuUperEQC69H6pqe-22Lq");
 /*
-let test = new Webhook("https://discord.com/api/webhooks/833124330618486824/lp6sA3nBlatOkf7tl-cqNPD1kgi9De4S1A-mxBBv3vy57IpWuUperEQC69H6pqe-22Lq");
+let test = new Webhook("This webhook is now deleted, nice try");
 while(test.lock);
 console.log("done");
 */
 // Hook.send(new webhook.MessageBuilder().setName("WEBHOOK-NAME").setText("hello"));
+
+
+const fetch = require('node-fetch');
+
+(async () => {
+  try {
+
+    const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY')
+    const json = await response.json()
+
+    console.log(json["url"]);
+    console.log(json.explanation);
+  } catch (error) {
+    console.log(error.response.body);
+  }
+})();

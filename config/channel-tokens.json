@@ -1,12 +1,12 @@
 {
-    "#Weeb-poly#image-spam":{
-       endpoint:"<Insert url>",
-       name: "",
-       avatar: "",
-      }
+    "Weeb-poly#image-spam":{
+       "endpoint": "<Insert Token Here>",
+       "name": "42-bot",
+       "avatar": ""
+     },
     "Weeb-poly#nsfw-image-spam": {
-      endpoint: "<Insert url>",
-      name: "",
-      avatar: ""
+      "endpoint": "<Insert Token Here>",
+      "name": "Hoshi-bot",
+      "avatar": ""
     }
 }

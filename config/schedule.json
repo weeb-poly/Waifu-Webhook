@@ -1,10 +1,13 @@
 {
     "images-gathered": 1618853154,
-    "#Weeb-poly#image-spam": {
-      "number": 1,
-      "1618772566779": "<url here>"
+    "Weeb-poly#image-spam": {
+      "start-time": 1618853154,
+      "hours-apart": 24,
+      "images": []
     },
-    "#Weeb-poly#nsfw-image-spam": {
-      "3": "1618772566779,"
+    "Weeb-poly#nsfw-image-spam": {
+      "start-time": 1618853154,
+      "hours-apart": 1,
+      "images": []
     }
 }
