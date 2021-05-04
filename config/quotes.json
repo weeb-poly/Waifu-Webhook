@@ -30,5 +30,13 @@
       "nsfw":[
          "Ara Ara"
       ]
-   }
+   },
+   "awoo":{
+      "sfw":[
+         "Fluffy",
+         "Not a furry, I swear",
+         "headpats only"
+      ],
+      "nsfw":[]
+   },
 }

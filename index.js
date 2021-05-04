@@ -1,6 +1,6 @@
 const webhook = require("webhook-discord");
 const fetch = require('node-fetch');
-var cron = require('node-cron');
+// var cron = require('node-cron');
 fs = require('fs');
 
 function record(dir, name, data){
@@ -85,7 +85,7 @@ async function driver(channelConfig, endpoints, schedule, quotes){
   // wait for all images to be recieved
   let imageURL = await Promise.all(promiseTable);
   schedule["images-gathered"] = Date.now();
-
+  
   imageURL.forEach((triple, i) => {
     let pair = [triple[1], triple[2]];
     schedule[triple[0]]["images"].push(pair);
