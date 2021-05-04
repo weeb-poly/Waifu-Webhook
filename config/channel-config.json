@@ -1,12 +1,7 @@
 {
-	"Weeb-poly#image-spam": {
-	    "frequency": 1,
-	    "type": "sfw",
-	    "tags": "waifu,neko,smug,blush"
-	},
-	"Weeb-poly#nsfw-image-spam": {
-			"frequency": 3,
-			"type": "nsfw",
-			"tags": "waifu,neko,trap"
+	"Weeb-poly-dev#waifu-webhook": {
+		"frequency": 1,
+		"type": "sfw",
+		"tags": "awoo,blush"
 	}
 }

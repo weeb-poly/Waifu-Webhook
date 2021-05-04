@@ -57,7 +57,7 @@ async function sendMessage(endpoints, channelConfig, quotes, schedule){
                   .setTitle(quoteToSend)
                   .setAuthor("From Waifu.pics", "https://waifu.pics/favicon.png", "https://waifu.pics/")
                   .setImage(imageDataArray[1])
-                  .setFooter("Star us on [GitHub](https://github.com/weeb-poly/Waifu-Webhook)");
+                  .setDescription("[Star us on Github!](https://github.com/weeb-poly/Waifu-Webhook)");
 
     Hook.send(msg);
   });
@@ -91,6 +91,9 @@ async function driver(channelConfig, endpoints, schedule, quotes){
 
   imageURL.forEach((triple, i) => {
     let pair = [triple[1], triple[2]];
+
+    // TODO: update the schedule if there are places there that are not there before
+
     schedule[triple[0]]["images"].push(pair);
 
     if (schedule[triple[0]]["start-time"] < Date.now() + 120)
@@ -109,12 +112,14 @@ async function driver(channelConfig, endpoints, schedule, quotes){
   // channel-tokens contains the actual urls, names, and images for each webhook
   let tokens = JSON.parse(fs.readFileSync("./config/channel-tokens.json"));
   // contains the last time images were gathered and the last time images were sent
-  let postTime = JSON.parse(fs.readFileSync("./config/schedule.json"));
+  let schedule = JSON.parse(fs.readFileSync("./config/schedule.json"));
   // contains quotes to display for each tag
   let quotes = JSON.parse(fs.readFileSync("./config/quotes.json"));
 
+  updateSchedule(postTime, channelConfig);
+
   /* --  -- */
-  driver(channelConfig, tokens, postTime, quotes);
+  driver(channelConfig, tokens, schedule, quotes);
 
   // write the new schedule
   // start webhook cron job
