@@ -1,46 +1,50 @@
 const webhook = require("webhook-discord");
 const fetch = require('node-fetch');
-var cron = require('node-cron');
-fs = require('fs');
+const cron = require('node-cron');
+const fs = require('fs');
 
 function record(dir, name, data){
-    if(!fs.existsSync(dir)) fs.mkdirSync(dir);
-		fs.writeFile(dir + '/' + name + ".json", JSON.stringify(data), (err) => {
-          if (err) throw err;
-          console.log(name + ' File saved.');
-    });
+  if (!fs.existsSync(dir))
+    fs.mkdirSync(dir);
 
+  fs.writeFile(dir + '/' + name + ".json", JSON.stringify(data), (err) => {
+    if (err) throw err;
+    console.log(name, 'File saved.');
+  });
 }
 
 async function imgGet(server, number, tag, sfw){
+  try {
+    let endpoint = "https://waifu.pics/api/" + sfw + '/' + tag;
+    const response = await fetch(endpoint);
+    const imgData = await response.json();
 
-    try{
-      let endpoint = "https://waifu.pics/api/" + sfw + '/' + tag;
-      const response = await fetch(endpoint);
-      const imgData = await response.json();
+    let url = imgData["url"];
+    let name = number + "_" + tag + url.match(/\.[0-9a-z]+$/i);
+    return [server, name, url];
 
-      let url = imgData["url"];
-      let name = number + "_" + tag + url.match(/\.[0-9a-z]+$/i);
-      return [server, name, url];
-
-    } catch (err){
-      console.log("Error: " + err.message);
-    }
+  } catch (err) {
+    console.log("Error:", err.message);
+  }
 };
 
 async function sendMessage(endpoints, channelConfig, quotes, schedule){
   Object.keys(endpoints).forEach((key, i) => {
 
     let safe = channelConfig[key]["type"];
+
     console.log(safe);
+
     let imageDataArray = schedule[key]["images"].shift();
     let tag = imageDataArray[0].match(/[a-z]+[^\.]/)[0];
     let quoteArray = [];
-    if (tag in quotes){
+
+    if (tag in quotes) {
       quoteArray = quotes[tag][safe];
     } else {
       quoteArray = quotes["generic"][safe];
     }
+
     // generate quote
     let quoteToSend = quoteArray[Math.floor(Math.random() * quoteArray.length)];
     console.log(quoteToSend);
@@ -53,11 +57,10 @@ async function sendMessage(endpoints, channelConfig, quotes, schedule){
                   .setTitle(quoteToSend)
                   .setAuthor("From Waifu.pics", "https://waifu.pics/favicon.png", "https://waifu.pics/")
                   .setImage(imageDataArray[1])
-                  .setFooter("star us on github:\nhttps://github.com/weeb-poly/Waifu-Webhook");
+                  .setFooter("Star us on [GitHub](https://github.com/weeb-poly/Waifu-Webhook)");
+
     Hook.send(msg);
-
   });
-
 }
 
 async function driver(channelConfig, endpoints, schedule, quotes){
@@ -89,14 +92,13 @@ async function driver(channelConfig, endpoints, schedule, quotes){
   imageURL.forEach((triple, i) => {
     let pair = [triple[1], triple[2]];
     schedule[triple[0]]["images"].push(pair);
+
     if (schedule[triple[0]]["start-time"] < Date.now() + 120)
       schedule[triple[0]]["starttime"] = Date.now() + 120
-
   });
 
   await sendMessage(endpoints, channelConfig, quotes, schedule);
   return schedule;
-
 }
 
 // this is the main function
@@ -117,5 +119,4 @@ async function driver(channelConfig, endpoints, schedule, quotes){
   // write the new schedule
   // start webhook cron job
   // sendMessage(tokens, channelConfig, quotes);
-
 })();
