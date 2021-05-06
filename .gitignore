@@ -55,7 +55,7 @@ jspm_packages/
 schedule.json
 
 # ignore the channel tokens, because that has sensitive information
-# channel-tokens.json
+channel-tokens.json
 
 # ignore testHook.js
 testHook.js
