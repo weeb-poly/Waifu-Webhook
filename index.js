@@ -28,7 +28,7 @@ async function imgGet(server, number, tag, sfw){
   }
 };
 
-async function sendMessage(channelConfig, quotes, schedule){
+async function sendMessage(channelConfig, quotes, schedule, colors){
   Object.keys(channelConfig).forEach((key, i) => {
 
     let safe = channelConfig[key]["type"];
@@ -38,12 +38,13 @@ async function sendMessage(channelConfig, quotes, schedule){
     let imageDataArray = schedule[key]["images"].shift();
     let tag = imageDataArray[0].match(/[a-z]+[^\.]/)[0];
     let quoteArray = [];
+    let color = "";
 
-    if (tag in quotes) {
-      quoteArray = quotes[tag][safe];
-    } else {
-      quoteArray = quotes["generic"][safe];
-    }
+    if (tag in quotes) quoteArray = quotes[tag][safe];
+    else quoteArray = quotes["generic"][safe];
+
+    if (tag in colors) color = colors[tag];
+    else color = colors["default"];
 
     // generate quote
     let quoteToSend = quoteArray[Math.floor(Math.random() * quoteArray.length)];
@@ -53,7 +54,7 @@ async function sendMessage(channelConfig, quotes, schedule){
     const Hook = new webhook.Webhook(channelConfig[key]["endpoint"]);
     const msg = new webhook.MessageBuilder()
                   .setName(channelConfig[key]["name"])
-                  .setColor('#04ff00')
+                  .setColor(color)
                   .setTitle(quoteToSend)
                   .setAuthor("From Waifu.pics", "https://waifu.pics/favicon.png", "https://waifu.pics/")
                   .setImage(imageDataArray[1])
@@ -63,7 +64,7 @@ async function sendMessage(channelConfig, quotes, schedule){
   });
 }
 
-async function driver(channelConfig, quotes){
+async function driver(channelConfig, quotes, colors){
 
   let serverChannels = Object.keys(channelConfig);
   let images = {};
@@ -101,7 +102,7 @@ async function driver(channelConfig, quotes){
     schedule[server]["images"].push(pair);
     schedule[server]["number"]++;
   });
-  await sendMessage(channelConfig, quotes, schedule);
+  await sendMessage(channelConfig, quotes, schedule, colors);
   return schedule;
 }
 
@@ -112,12 +113,13 @@ async function driver(channelConfig, quotes){
   let tokens = JSON.parse(fs.readFileSync("./config/channel-tokens.json"));
   // contains quotes to display for each tag
   let quotes = JSON.parse(fs.readFileSync("./config/quotes.json"));
+  let colors = JSON.parse(fs.readFileSync("./config/colors.json"));
 
   /* --  -- */
   // await sendMessage(channelConfig, quotes, schedule);
 
-  cron.schedule("*/2 * * * *", () => {
-    driver(tokens, quotes);
+  cron.schedule("20 * * * *", () => {
+    driver(tokens, quotes, colors);
   });
 
   // write the new schedule
