@@ -101,7 +101,7 @@ async function driver(channelConfig, quotes){
     schedule[server]["images"].push(pair);
     schedule[server]["number"]++;
   });
-
+  await sendMessage(channelConfig, quotes, schedule);
   return schedule;
 }
 
@@ -114,9 +114,12 @@ async function driver(channelConfig, quotes){
   let quotes = JSON.parse(fs.readFileSync("./config/quotes.json"));
 
   /* --  -- */
-  let schedule = await driver(tokens, quotes);
-//  await sendMessage(channelConfig, quotes, schedule);
-  
+  // await sendMessage(channelConfig, quotes, schedule);
+
+  cron.schedule("*/2 * * * *", () => {
+    driver(tokens, quotes);
+  });
+
   // write the new schedule
   // start webhook cron job
   // sendMessage(tokens, channelConfig, quotes);
