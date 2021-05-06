@@ -1,12 +1,16 @@
 {
-    "Weeb-poly#image-spam":{
-       "endpoint": "<Insert Token Here>",
-       "name": "42-bot",
-       "avatar": ""
-     },
+    "Weeb-poly-dev#waifu-webhook": {
+      "endpoint": "https://discord.com/api/webhooks/839165011258769458/oabwQJ6CNakSorQNSBOUOD8Qq51D3vB-IK6ErOrp5DbkNpIc-QKN1DdMy9r3zVAk2dAH",
+      "name": "Cyrus-bot",
+      "frequency": 1,
+      "type": "sfw",
+      "tags": "awoo,blush,waifu,smile,neko,megumin"
+    },
     "Weeb-poly#nsfw-image-spam": {
-      "endpoint": "<Insert Token Here>",
-      "name": "Hoshi-bot",
-      "avatar": ""
+      "endpoint": "https://discord.com/api/webhooks/839564979745194034/UKquc2oqLDvqPgyl2_7Wsz3-gp5WCJePmNCC0Y6GnJfWyD765VitfQ_KrdVMnkDX9KYa",
+      "name": "Horni-bot",
+      "frequency": 1,
+      "type": "nsfw",
+      "tags": "neko,waifu,trap,blowjob"
     }
 }

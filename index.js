@@ -28,8 +28,8 @@ async function imgGet(server, number, tag, sfw){
   }
 };
 
-async function sendMessage(endpoints, channelConfig, quotes, schedule){
-  Object.keys(endpoints).forEach((key, i) => {
+async function sendMessage(channelConfig, quotes, schedule){
+  Object.keys(channelConfig).forEach((key, i) => {
 
     let safe = channelConfig[key]["type"];
 
@@ -50,9 +50,9 @@ async function sendMessage(endpoints, channelConfig, quotes, schedule){
     console.log(quoteToSend);
 
     // actual webhook
-    const Hook = new webhook.Webhook(endpoints[key]["endpoint"]);
+    const Hook = new webhook.Webhook(channelConfig[key]["endpoint"]);
     const msg = new webhook.MessageBuilder()
-                  .setName(endpoints[key]["name"])
+                  .setName(channelConfig[key]["name"])
                   .setColor('#04ff00')
                   .setTitle(quoteToSend)
                   .setAuthor("From Waifu.pics", "https://waifu.pics/favicon.png", "https://waifu.pics/")
@@ -63,7 +63,7 @@ async function sendMessage(endpoints, channelConfig, quotes, schedule){
   });
 }
 
-async function driver(channelConfig, endpoints, schedule, quotes){
+async function driver(channelConfig, quotes){
 
   let serverChannels = Object.keys(channelConfig);
   let images = {};
@@ -87,40 +87,36 @@ async function driver(channelConfig, endpoints, schedule, quotes){
 
   // wait for all images to be recieved
   let imageURL = await Promise.all(promiseTable);
-  schedule["images-gathered"] = Date.now();
+  let schedule = {};
 
-  imageURL.forEach((triple, i) => {
-    let pair = [triple[1], triple[2]];
+  imageURL.forEach(([server, imageName, url], i) => {
+    let pair = [imageName, url];
 
     // TODO: update the schedule if there are places there that are not there before
+    if (!(server in schedule)){
+      schedule[server] = {"images": []};
+      schedule[server]["number"] = 0;
+    }
 
-    schedule[triple[0]]["images"].push(pair);
-
-    if (schedule[triple[0]]["start-time"] < Date.now() + 120)
-      schedule[triple[0]]["starttime"] = Date.now() + 120
+    schedule[server]["images"].push(pair);
+    schedule[server]["number"]++;
   });
 
-  await sendMessage(endpoints, channelConfig, quotes, schedule);
   return schedule;
 }
 
 // this is the main function
-(() => {
+(async () => {
   /* -- Parsing the json config files -- */
-  // channel config contains the prefrences for each channel
-  let channelConfig = JSON.parse(fs.readFileSync("./config/channel-config.json"));
   // channel-tokens contains the actual urls, names, and images for each webhook
   let tokens = JSON.parse(fs.readFileSync("./config/channel-tokens.json"));
-  // contains the last time images were gathered and the last time images were sent
-  let schedule = JSON.parse(fs.readFileSync("./config/schedule.json"));
   // contains quotes to display for each tag
   let quotes = JSON.parse(fs.readFileSync("./config/quotes.json"));
 
-  updateSchedule(postTime, channelConfig);
-
   /* --  -- */
-  driver(channelConfig, tokens, schedule, quotes);
-
+  let schedule = await driver(tokens, quotes);
+//  await sendMessage(channelConfig, quotes, schedule);
+  
   // write the new schedule
   // start webhook cron job
   // sendMessage(tokens, channelConfig, quotes);
