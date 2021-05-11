@@ -1,128 +1,63 @@
 const webhook = require("webhook-discord");
-const fetch = require('node-fetch');
+const utils = require("./utils.js");
 const cron = require('node-cron');
 const fs = require('fs');
 
-function record(dir, name, data){
-  if (!fs.existsSync(dir))
-    fs.mkdirSync(dir);
+async function sendMessage(channelConfig, channel, quotes, imgURL, colors){
 
-  fs.writeFile(dir + '/' + name + ".json", JSON.stringify(data), (err) => {
-    if (err) throw err;
-    console.log(name, 'File saved.');
-  });
+  let tag = imgURL[0];
+  let sfw = imgURL[1];
+  let url = imgURL[2];
+
+  console.log(sfw);
+
+  let quoteArray = (tag in quotes) ? quotes[tag][sfw] : quotes["generic"][sfw];
+  let tagColor = (tag in colors) ? colors[tag] : colors["default"];
+
+  // generate quote
+  let quoteToSend = quoteArray[Math.floor(Math.random() * quoteArray.length)];
+  console.log(quoteToSend);
+  // actual webhook
+  const Hook = new webhook.Webhook(channelConfig[channel]["endpoint"]);
+  const msg = new webhook.MessageBuilder()
+                .setName(channelConfig[channel]["name"])
+                .setColor(tagColor)
+                .setTitle(quoteToSend)
+                .setAuthor("From Waifu.pics", "https://waifu.pics/favicon.png", "https://waifu.pics/")
+                .setImage(url)
+                .setDescription("[Star us on Github!](https://github.com/weeb-poly/Waifu-Webhook)");
+
+  Hook.send(msg);
 }
 
-async function imgGet(server, number, tag, sfw){
-  try {
-    let endpoint = "https://waifu.pics/api/" + sfw + '/' + tag;
-    const response = await fetch(endpoint);
-    const imgData = await response.json();
-
-    let url = imgData["url"];
-    let name = number + "_" + tag + url.match(/\.[0-9a-z]+$/i);
-    return [server, name, url];
-
-  } catch (err) {
-    console.log("Error:", err.message);
-  }
-};
-
-async function sendMessage(channelConfig, quotes, schedule, colors){
-  Object.keys(channelConfig).forEach((key, i) => {
-
-    let safe = channelConfig[key]["type"];
-
-    console.log(safe);
-
-    let imageDataArray = schedule[key]["images"].shift();
-    let tag = imageDataArray[0].match(/[a-z]+[^\.]/)[0];
-    let quoteArray = [];
-    let color = "";
-
-    if (tag in quotes) quoteArray = quotes[tag][safe];
-    else quoteArray = quotes["generic"][safe];
-
-    if (tag in colors) color = colors[tag];
-    else color = colors["default"];
-
-    // generate quote
-    let quoteToSend = quoteArray[Math.floor(Math.random() * quoteArray.length)];
-    console.log(quoteToSend);
-
-    // actual webhook
-    const Hook = new webhook.Webhook(channelConfig[key]["endpoint"]);
-    const msg = new webhook.MessageBuilder()
-                  .setName(channelConfig[key]["name"])
-                  .setColor(color)
-                  .setTitle(quoteToSend)
-                  .setAuthor("From Waifu.pics", "https://waifu.pics/favicon.png", "https://waifu.pics/")
-                  .setImage(imageDataArray[1])
-                  .setDescription("[Star us on Github!](https://github.com/weeb-poly/Waifu-Webhook)");
-
-    Hook.send(msg);
-  });
-}
-
-async function driver(channelConfig, quotes, colors){
-
-  let serverChannels = Object.keys(channelConfig);
-  let images = {};
+async function driver(channelConfig, channel, quotes, colors, cronString){
 
   // gets all the images for each channel
-  serverChannels.forEach((key, i) => {
-    images[key] = [];
-    let tags = channelConfig[key]["tags"].match(/[^,]+/g); // gets the tags each channels wants and puts it in an array
-    for (let i = 0; i < channelConfig[key]["frequency"]; i++)
-      images[key].push(tags[Math.floor(Math.random() * tags.length)]);
-  });
+  let tagArray = channelConfig[channel]["tags"].match(/[^,]+/g);
+  let tag = tagArray[Math.floor(Math.random() * tagArray.length)]; // pick a random tag
 
   // downloads all images
-  let promiseTable = [];
-  for (let server of serverChannels){
-    let number = 0;
-    for (let tag of images[server]){
-      promiseTable.push(imgGet(server, number++, tag, channelConfig[server]["type"]));
-    }
-  }
-
-  // wait for all images to be recieved
-  let imageURL = await Promise.all(promiseTable);
-  let schedule = {};
-
-  imageURL.forEach(([server, imageName, url], i) => {
-    let pair = [imageName, url];
-
-    // TODO: update the schedule if there are places there that are not there before
-    if (!(server in schedule)){
-      schedule[server] = {"images": []};
-      schedule[server]["number"] = 0;
-    }
-
-    schedule[server]["images"].push(pair);
-    schedule[server]["number"]++;
+  let imgURL = await utils.imgGet(tag, channelConfig[channel]["type"]);
+  cron.schedule(cronString, () => {
+    sendMessage(channelConfig, channel, quotes, imgURL, colors);
   });
-  await sendMessage(channelConfig, quotes, schedule, colors);
-  return schedule;
 }
 
 // this is the main function
-(async () => {
+(() => {
   /* -- Parsing the json config files -- */
   // channel-tokens contains the actual urls, names, and images for each webhook
   let tokens = JSON.parse(fs.readFileSync("./config/channel-tokens.json"));
   // contains quotes to display for each tag
   let quotes = JSON.parse(fs.readFileSync("./config/quotes.json"));
+  // containst the colors for each tag
   let colors = JSON.parse(fs.readFileSync("./config/colors.json"));
 
-  /* --  -- */
+  /* -- -- */
   // await sendMessage(channelConfig, quotes, schedule);
-
-  cron.schedule("20 * * * *", () => {
-    driver(tokens, quotes, colors);
+  Object.keys(tokens).forEach((key) => {
+    let cronString = utils.cronCalc(tokens[key]["frequency"]);
+    driver(tokens, key, quotes, colors, cronString);
   });
 
-  // write the new schedule
-  // start webhook cron job
-  // sendMessage(tokens, channelConfig, quotes);
 })();
