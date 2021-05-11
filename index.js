@@ -34,10 +34,10 @@ async function driver(channelConfig, channel, quotes, colors, cronString){
 
   // gets all the images for each channel
   let tagArray = channelConfig[channel]["tags"].match(/[^,]+/g);
-  let tag = tagArray[Math.floor(Math.random() * tagArray.length)]; // pick a random tag
 
   // downloads all images
   cron.schedule(cronString, async () => {
+    let tag = tagArray[Math.floor(Math.random() * tagArray.length)]; // pick a random tag
     let imgURL = await utils.imgGet(tag, channelConfig[channel]["type"]);
     sendMessage(channelConfig, channel, quotes, imgURL, colors);
   });
