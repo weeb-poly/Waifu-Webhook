@@ -1,0 +1,14 @@
+{
+  "Weeb-poly-dev#waifu-webhook": {
+    "name": "Cyrus-bot",
+    "frequency": "@perminute",
+    "type": "sfw",
+    "tags": ["awoo","blush","waifu","smile","neko","megumin"]
+  },
+  "Weeb-poly#schmleh": {
+    "name": "Actually-Horni-bot",
+    "frequency": "@hour",
+    "type": "nsfw",
+    "tags": ["neko","waifu"]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "default": {
+    "color": "#04FF00",
+    "sfw_quotes": [
+      "kawii <3",
+      "not my favorite",
+      "I have the power of god and anime on my side",
+      "This right here is my favorite thing. Ever!",
+      "I yearn for true gender equality",
+      "This is just for research purposes, I swear!",
+      "Sauce?"
+    ],
+    "nsfw_quotes": [
+      "lewd",
+      "At least its not handholding",
+      "I dont know what this is ... but its kinda hot",
+      "BONK!",
+      "nutty",
+      "hot",
+      "gross",
+      "Its just a Redo of healer refererence I swear!",
+      "Sauce?"
+    ]
+  },
+  "waifu": {
+    "color": "#11806A"
+  },
+   "neko": {
+      "color": "#E74C3C"
+   },
+   "shinobu": {
+      "color": "#F1C40F"
+   },
+   "megumin": {
+      "color": "#E74C3C",
+      "sfw_quotes": [
+         "EXPLOSION!"
+      ],
+      "nsfw_quotes": [
+         "Ara Ara"
+      ]
+   },
+   "bully": {
+      "color": "#95A5A6"
+   },
+   "cuddle": {
+      "color": "#E91E63"
+   },
+   "hug": {
+      "color": "#E91E63"
+   },
+   "awoo": {
+      "color": "#E74C3C",
+      "sfw_quotes": [
+         "Fluffy",
+         "Not a furry, I swear",
+         "headpats only"
+      ],
+      "nsfw_quotes": []
+   },
+   "kiss": {
+      "color": "#AD1457"
+   },
+   "lick": {
+      "color": "#AD1457"
+   },
+   "bonk": {
+      "color": "#1ABC9C"
+   },
+   "blush": {
+      "color": "#E91E63"
+   },
+   "smile": {
+      "color": "#9B59B6"
+   },
+   "dance": {
+      "color": "#1ABC9C"
+   },
+  "loli": {
+      "sfw_quotes": [
+         "So cute!",
+         "I heard you liked loli's",
+         "headpats only",
+         "FBI OPEN UP"
+      ],
+      "nsfw_quotes": [
+         "no"
+      ]
+  }
+}
