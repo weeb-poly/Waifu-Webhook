@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Prasantacharya/Waifu-Webhook.git"
+    "url": "git+https://github.com/weeb-poly/Waifu-Webhook.git"
   },
   "keywords": [
     "discord",
@@ -18,9 +18,9 @@
   "author": "Prasantacharya",
   "license": "AGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/Prasantacharya/Waifu-Webhook/issues"
+    "url": "https://github.com/weeb-poly/Waifu-Webhook/issues"
   },
-  "homepage": "https://github.com/Prasantacharya/Waifu-Webhook#readme",
+  "homepage": "https://github.com/weeb-poly/Waifu-Webhook#readme",
   "dependencies": {
     "discord.js": "^12.5.3",
     "node-cron": "^3.0.0",
